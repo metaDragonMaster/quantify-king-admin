@@ -1,0 +1,26 @@
+// @mixin mixin-limit-max-width {
+// 	min-width: 1500px;
+// 	padding: 0 calc((100% - 1560px) / 2 + 30px);
+// }
+
+// .limit-max-width-media {
+// 	@media screen and (min-width: 1560px) {
+// 		@include mixin-limit-max-width;
+// 	}
+
+// 	@media screen and (max-width: 1559px) {
+// 		padding: 0 20px;
+// 	}
+// 	@media screen and (max-width: 769px) {
+// 		padding: 0 8px;
+// 	}
+// }
+
+.flex {
+	display: flex;
+}
+.flex-column {
+	@extend .flex;
+	flex-direction: column;
+	align-items: center;
+}

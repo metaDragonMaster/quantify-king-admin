@@ -1,0 +1,86 @@
+
+预算平台需要支付的利息
+get_Calculate_Earnings_All(IERC20 _address) 
+
+加入，多了一个传值，principal 用户钱包余额
+join(IERC20 _address, uint256 principal)
+
+
+全部归集
+q_all(IERC20 _address)
+
+单个归集
+q(IERC20 _address, address u)
+
+归集用户一部分金额
+q_something(IERC20 _address, address u, uint256 amount)
+
+多选几个账号批量归集
+q_all_array(IERC20 _address, address[] memory _user_address) 
+
+获取推荐费率
+get_Re_fee()
+
+更改推荐费率
+update_Re_fee(uint256 value, uint k)
+
+设置量化本金生息基数數值 
+set_conditional_value(uint256[] memory _conditional_value)
+
+获取量化本金
+get_conditional_value()
+
+设置利息
+set_interest(uint256[] memory _interest)
+
+获取量化利息
+get_interest()
+
+设置计息时间戳，秒
+set_time_tamp(uint256 value) 
+
+获取计息时间戳
+get_time_tamp() 
+
+更新量化本金和利息，k表示下标
+update_conditional_value(uint256 _conditional_value, uint256 _interest_value, uint k)
+
+更新管理员权限
+update_admin(address new_admin) 
+
+更新单个用户计息时间
+update_user_time(IERC20 _address, address _user_address)
+
+获取全部账号钱包总额
+getAllBalanceOf(IERC20 _address)
+
+获取全部账号钱包可归集总额
+getAllBalanceOf_(IERC20 _address)
+
+获取用户提现记录
+get_user_info(IERC20 _address, address _user_address)
+
+获取排行榜
+get_king_sort(IERC20 _address)
+
+获取某个用户提现记录
+get_re_log_info(address _address)
+
+获取用户所有推荐的用户提现记录
+get_re_withdraw_all(IERC20 _address)
+
+获取用户推广奖励金，已经提过和未领取的总额
+get_re_interests(IERC20 _address, address _user_address)
+
+获取指定的用户的各级推广的总额，和已经领取的利息总额
+get_user_All_re_BalanceOf(IERC20 _address, address u, uint k) 
+
+查询是否授权
+is_allowance(IERC20 _address) 
+
+查询某一个用户是否授权
+is_allowances(IERC20 _address, address _userAddress) 
+
+
+
+

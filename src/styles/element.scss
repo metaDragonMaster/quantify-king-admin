@@ -1,0 +1,49 @@
+body.el-popup-parent--hidden {
+    @media screen and (max-width: 768px) {
+        padding-right: 0 !important;
+    }
+}
+
+.el-button {
+    --el-color-success: #47A663;
+    --el-button-hover-bg-color:   #47a664a8;
+}
+
+.el-input {
+    --el-input-text-color: #ffffff;
+    --el-input-focus-border: #333333;
+    --el-input-focus-border-color: #e7e7e7;
+    --el-input-border-color: #6e6e6e;
+    --el-input-bg-color: transparent;
+    --el-input-placeholder-color: #777777;
+    background-image: linear-gradient(90deg,
+            #494949 0%,
+            rgb(73, 73, 73) 100%);
+}
+
+.el-table {
+    --el-table-border: 1px solid #242424;
+    --el-table-tr-bg-color: #333333;
+    --el-table-header-bg-color: #333333;
+    --el-table-border-color: #333333;
+    font-size: 12px;
+
+    .el-table__header thead {
+        color: rgb(122, 122, 122);
+    }
+
+    tr.el-table__row {
+        color: #FFF;
+    }
+
+    &.el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
+        background-color: #47A663;
+    }
+    .el-table__empty-block {
+        background-color: #333333;
+    }
+}
+
+.el-form {
+    --el-text-color-regular: #FFF;
+}

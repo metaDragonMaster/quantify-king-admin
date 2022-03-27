@@ -1,0 +1,91 @@
+.theme-text-shadow {
+    background-image: linear-gradient(180deg, #fff 40%, #38EF7D);
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+.theme-text-shadow-green {
+    @extend .theme-text-shadow;
+    background-image: linear-gradient(90deg, #11998E 40%, #38EF7D);
+}
+
+.theme-button-clip {
+    background-image: linear-gradient(90deg, #11998E 40%, #38EF7D);
+    clip-path: polygon(20% 0%, 100% 0, 100% 80%, 80% 100%, 0 100%, 0% 20%);
+}
+
+.theme-bg-shadow {
+    background: linear-gradient(130deg, #FF56F6 18%, #B936EE 43%, #3BACE2 85%, #406AFF 100%);
+}
+
+.theme-bg-shadow-green {
+    background: linear-gradient(270deg, #11998E 0%, #38EF7D 100%);
+}
+
+.theme-bg-shadow-black {
+    background: linear-gradient(270deg,
+            #180E3F,
+            #221046);
+}
+
+// .theme-box-shadow {
+//     backdrop-filter: blur(10px);
+//     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+//     box-shadow:
+//         inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+//         inset 1px 0 0 0 rgba(255, 255, 255, 0.4),
+//         inset 0 0 1px 1px rgba(255, 255, 255, 0.2),
+//         inset -1px 0 0 0 rgba(255, 255, 255, 0.1),
+//     ;
+// }
+.theme-box-shadow {
+	background: linear-gradient(
+		135deg,
+		#494949 0%,
+		rgba(73, 73, 73, 0.06) 100%
+	);
+}
+
+.theme-shadow-border {
+    position: relative;
+    background-image: linear-gradient(0.25turn, #3c79d4, #ffa6fa);
+    border-radius: 2px;
+    z-index: 1;
+
+    &::after {
+        position: absolute;
+        z-index: -1;
+        top: 2px;
+        left: 2px;
+        display: block;
+        content: "";
+        height: calc(100% - 4px);
+        width: calc(100% - 4px);
+        background-image: linear-gradient(0.25turn,
+                #ff56f6,
+                #b936ee,
+                #3bace2,
+                #406aff);
+    }
+}
+
+.theme-shadow-border-green {
+    @extend .theme-shadow-border;
+
+    &::after {
+        background-image: linear-gradient(0.25turn,
+                #11998E,
+                #38EF7D);
+    }
+}
+
+.theme-shadow-border-black {
+    @extend .theme-shadow-border;
+
+    &::after {
+        background-image: linear-gradient(0.25turn,
+                #180E3F,
+                #221046);
+    }
+}
