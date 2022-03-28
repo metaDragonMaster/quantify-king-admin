@@ -1,8 +1,10 @@
 <template>
   <div>
-    <el-button type="success" v-if="isChangeCell" @click="saveCell"
-      >保存</el-button
-    >
+    <div class="save">
+      <el-button type="success" v-if="isChangeCell" @click="saveCell"
+        >保存</el-button
+      >
+    </div>
     <el-table
       :data="table.data"
       style="width: 100%"
@@ -109,11 +111,9 @@ async function updateCell() {
   try {
     const { QKContract } = Contracts.value;
     const { id, fee } = table.cell;
-    const res = await QKContract.methods
-      .update_Re_fee(fee, id)
-      .send({
-        from: userAddress.value,
-      });
+    const res = await QKContract.methods.update_Re_fee(fee, id).send({
+      from: userAddress.value,
+    });
     load.close();
     if (res.status) {
       return true;
@@ -130,4 +130,8 @@ async function updateCell() {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.save {
+  margin-bottom: 10px;
+}
+</style>

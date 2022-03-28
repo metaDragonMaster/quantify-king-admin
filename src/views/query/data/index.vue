@@ -16,12 +16,12 @@
         <p class="p-2">{{ allWithdraw }}</p>
       </li>
       <li class="theme-box-shadow">
-        <p class="p-1">累积推荐奖励</p>
-        <p class="p-2">{{ board.reWithdraw }}</p>
+        <p class="p-1">推荐奖励提现</p>
+        <p class="p-2">{{ weiReWithdraw }}</p>
       </li>
       <li class="theme-box-shadow">
-        <p class="p-1">累积提现</p>
-        <p class="p-2">{{ board.withdraw }}</p>
+        <p class="p-1">用户利息提现</p>
+        <p class="p-2">{{ weiWithdraw }}</p>
       </li>
     </ul>
     <!-- <ul class="grid grid-2"> -->
@@ -45,10 +45,7 @@ import {
   PlusElMessage,
 } from "@/utils/PlusElement";
 import { computed, reactive, onMounted } from "vue";
-import {
-  UseStoreContracts,
-  UseStoreWeb3js
-} from "@/stores/web3js";
+import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
 import { AbiAddressUSDT } from "@/abis/index";
 
@@ -76,8 +73,12 @@ const board = reactive({
   reWithdraw: "0",
   // calculateEarningsAll: '0',
 });
+const weiAllBalanceOf = computed(() => textFromWei(board.AllBalanceOf));
+// const weiUsers = computed(()=> textFromWei(board.users))
+const weiWithdraw = computed(() => textFromWei(board.withdraw));
+const weiReWithdraw = computed(() => textFromWei(board.reWithdraw));
 const allWithdraw = computed(
-  () => Number(board.reWithdraw) + Number(board.withdraw)
+  () => textFromWei((Number(board.reWithdraw) + Number(board.withdraw)).toString())
 );
 
 async function init() {
@@ -95,7 +96,6 @@ async function init() {
   }
 }
 
-const weiAllBalanceOf = computed(()=> textFromWei(board.AllBalanceOf))
 async function getAllBalanceOf() {
   try {
     const { QKContract } = Contracts.value;

@@ -1,8 +1,9 @@
 <template>
   <div>
+    <div class="save">
     <el-button type="success" v-if="isChangeCell" @click="saveCell"
       >保存</el-button
-    >
+    ></div>
     <el-table
       :data="table.data"
       style="width: 100%"
@@ -150,4 +151,8 @@ async function updateCell() {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.save {
+  margin-bottom: 10px;
+}
+</style>
