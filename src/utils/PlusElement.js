@@ -58,6 +58,7 @@ export async function tryFunction(fn, errFn, loadText = "loading...") {
   }
 }
 export const PlusElMessage = (option) => {
+  option.duration = option.type == 'error' ? 0 : 3000
   return ElMessage({
     grouping: true,
     showClose: true,
