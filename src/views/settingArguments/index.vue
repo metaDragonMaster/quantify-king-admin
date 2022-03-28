@@ -16,6 +16,11 @@
       <Link to="/settingArguments/setTime">
         <el-button type="success">设置时间</el-button>
       </Link>
+      <Link to="/settingArguments/split">
+        <el-button type="success">分账详情</el-button>
+      </Link>
+
+      <!-- payee -->
     </div>
     <router-view></router-view>
   </div>

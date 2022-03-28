@@ -101,6 +101,14 @@ const routes = [
             },
             component: () => import("@/views/settingArguments/setTime/index.vue"),
           },
+          {
+            path: "/settingArguments/split",
+            name: "settingArgumentsSplit",
+            meta: {
+              title: "分账详情",
+            },
+            component: () => import("@/views/settingArguments/split/index.vue"),
+          },
         ]
       },
       
