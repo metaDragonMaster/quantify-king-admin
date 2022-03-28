@@ -93,6 +93,14 @@ const routes = [
             },
             component: () => import("@/views/settingArguments/recharge/index.vue"),
           },
+          {
+            path: "/settingArguments/setTime",
+            name: "settingArgumentsSetTime",
+            meta: {
+              title: "设置时间",
+            },
+            component: () => import("@/views/settingArguments/setTime/index.vue"),
+          },
         ]
       },
       

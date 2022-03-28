@@ -3,33 +3,33 @@
     <ul class="grid grid-2">
       <li class="theme-box-shadow">
         <p class="p-1">全部钱包USDT余额</p>
-        <p class="p-2">{{board.AllBalanceOf}}</p>
+        <p class="p-2">{{ weiAllBalanceOf }}</p>
       </li>
       <li class="theme-box-shadow">
         <p class="p-1">钱包地址数量</p>
-        <p class="p-2">{{board.users}}</p>
+        <p class="p-2">{{ board.users }}</p>
       </li>
     </ul>
     <ul class="grid grid-3">
       <li class="theme-box-shadow">
         <p class="p-1">累积产生利息</p>
-        <p class="p-2">{{allWithdraw}}</p>
+        <p class="p-2">{{ allWithdraw }}</p>
       </li>
       <li class="theme-box-shadow">
         <p class="p-1">累积推荐奖励</p>
-        <p class="p-2">{{board.reWithdraw}}</p>
+        <p class="p-2">{{ board.reWithdraw }}</p>
       </li>
       <li class="theme-box-shadow">
         <p class="p-1">累积提现</p>
-        <p class="p-2">{{board.withdraw}}</p>
+        <p class="p-2">{{ board.withdraw }}</p>
       </li>
     </ul>
     <!-- <ul class="grid grid-2"> -->
-      <!-- <li class="theme-box-shadow">
+    <!-- <li class="theme-box-shadow">
         <p class="p-1">未领取利息</p>
         <p class="p-2">99999999999</p>
       </li> -->
-      <!-- <li class="theme-box-shadow">
+    <!-- <li class="theme-box-shadow">
         <p class="p-1">预计下次结息数量</p>
         <p class="p-2">99999999999</p>
       </li> -->
@@ -44,47 +44,50 @@ import {
   lockLoadHandler,
   PlusElMessage,
 } from "@/utils/PlusElement";
-import {
-  computed, 
-  reactive,
-  onMounted,
-} from "vue";
+import { computed, reactive, onMounted } from "vue";
 import {
   UseStoreContracts,
-  // UseStoreWeb3js
+  UseStoreWeb3js
 } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
 import { AbiAddressUSDT } from "@/abis/index";
 
 const storeContracts = UseStoreContracts();
-// const storeWeb3js = UseStoreWeb3js();
+const storeWeb3js = UseStoreWeb3js();
 const { Contracts } = storeToRefs(storeContracts);
-// const {
-// userAddress
-// } = storeToRefs(storeWeb3js);
-
+const {
+  // userAddress
+  web3,
+} = storeToRefs(storeWeb3js);
+function textFromWei(str) {
+  return web3.value.utils.fromWei(str) || str;
+}
+// function textToWei(str) {
+//   return web3.value.utils.toWei(str.toString()) || str;
+// }
 onMounted(() => {
   init();
 });
 
 const board = reactive({
-  AllBalanceOf: '0',
-  users:'0',
-  withdraw: '0',
-  reWithdraw: '0',
+  AllBalanceOf: "0",
+  users: "0",
+  withdraw: "0",
+  reWithdraw: "0",
   // calculateEarningsAll: '0',
-})
-const allWithdraw = computed(()=> Number(board.reWithdraw) + Number(board.withdraw))
-
+});
+const allWithdraw = computed(
+  () => Number(board.reWithdraw) + Number(board.withdraw)
+);
 
 async function init() {
   // await getTableData();
   const load = lockLoadHandler("update loading...");
   try {
     await getAllBalanceOf();
-    await getUsers()
-    await getWithdrawAll()
-    await getReWithdrawAll()
+    await getUsers();
+    await getWithdrawAll();
+    await getReWithdrawAll();
     // await getCalculateEarningsAll()
     load.close();
   } catch (e) {
@@ -92,12 +95,13 @@ async function init() {
   }
 }
 
+const weiAllBalanceOf = computed(()=> textFromWei(board.AllBalanceOf))
 async function getAllBalanceOf() {
   try {
     const { QKContract } = Contracts.value;
     const res = await QKContract.methods.getAllBalanceOf(AbiAddressUSDT).call();
     console.log("getAllBalanceOf", res);
-    board.AllBalanceOf = res
+    board.AllBalanceOf = res;
   } catch (e) {
     console.error(e);
     PlusElMessage({
@@ -112,7 +116,7 @@ async function getUsers() {
     const { QKContract } = Contracts.value;
     const res = await QKContract.methods.getUsers().call();
     console.log("getUsers", res);
-    board.users = res.length
+    board.users = res.length;
   } catch (e) {
     console.error(e);
     PlusElMessage({
@@ -125,9 +129,11 @@ async function getUsers() {
 async function getWithdrawAll() {
   try {
     const { QKContract } = Contracts.value;
-    const res = await QKContract.methods.get_withdraw_all(AbiAddressUSDT).call();
+    const res = await QKContract.methods
+      .get_withdraw_all(AbiAddressUSDT)
+      .call();
     console.log("getWithdrawAll", res);
-    board.withdraw = res
+    board.withdraw = res;
   } catch (e) {
     console.error(e);
     PlusElMessage({
@@ -139,9 +145,11 @@ async function getWithdrawAll() {
 async function getReWithdrawAll() {
   try {
     const { QKContract } = Contracts.value;
-    const res = await QKContract.methods.get_re_withdraw_all(AbiAddressUSDT).call();
+    const res = await QKContract.methods
+      .get_re_withdraw_all(AbiAddressUSDT)
+      .call();
     console.log("getReWithdrawAll", res);
-    board.reWithdraw = res
+    board.reWithdraw = res;
   } catch (e) {
     console.error(e);
     PlusElMessage({
@@ -165,9 +173,6 @@ async function getReWithdrawAll() {
 //     });
 //   }
 // }
-
-
-
 </script>
 <style lang="scss" scoped>
 .grid {

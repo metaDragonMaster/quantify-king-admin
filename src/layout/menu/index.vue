@@ -31,23 +31,17 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
-import { 
-  toRefs,
-  computed,
-  defineProps
-} from "vue";
+import { useRoute } from "vue-router";
+import { toRefs, computed, defineProps } from "vue";
 const props = defineProps({
   isCollapse: {
     type: Boolean,
     default: false,
   },
-})
-const { isCollapse } = toRefs(props)
-const Route = useRoute()
-const defaultMenuActive = computed(()=>Route.path)
-
-
+});
+const { isCollapse } = toRefs(props);
+const Route = useRoute();
+const defaultMenuActive = computed(() => Route.path);
 </script>
 <style lang="scss" scoped>
 :deep(.el-menu) {
@@ -66,10 +60,12 @@ const defaultMenuActive = computed(()=>Route.path)
       background-color: transparent;
       border-right: 4px solid #47a663;
     }
-    span {
-      display: none;
-      @media screen and (min-width: 769px) {
-        display: inline-block;
+    &.el-menu--collapse {
+      span {
+        display: none;
+        @media screen and (min-width: 769px) {
+          display: inline-block;
+        }
       }
     }
   }

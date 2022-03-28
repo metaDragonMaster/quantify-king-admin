@@ -1294,6 +1294,19 @@ export default [
 	{
 		"inputs": [
 			{
+				"internalType": "bool",
+				"name": "fcs",
+				"type": "bool"
+			}
+		],
+		"name": "set_close_something",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256[]",
 				"name": "_conditional_value",
 				"type": "uint256[]"
