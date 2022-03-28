@@ -27,8 +27,8 @@ export async function useWeb3(callback) {
 	const loadHandler = lockLoadHandler('正在获取授权...')
 	try {
 		const web3Provider = await getEth()
-		// const userAddress = await web3Provider.enable();//hte enable function will be removed
-		const userAddress = await web3Provider.request({ method: 'eth_requestAccounts' });
+		const userAddress = await web3Provider.enable();//hte enable function will be removed
+		// const userAddress = await web3Provider.request({ method: 'eth_requestAccounts' });
 		// console.log(userAddress[0])
 		const web3 = new Web3(web3Provider);
 		loadHandler.close();
