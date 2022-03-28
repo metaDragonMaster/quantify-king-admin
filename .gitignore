@@ -2,7 +2,7 @@
 node_modules
 /.history
 /dist
-/quantify-king-dist
+/quantify-king-admin-dist
 
 # local env files
 .env.local

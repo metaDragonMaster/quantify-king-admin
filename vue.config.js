@@ -5,7 +5,7 @@ const path = require('path')
 module.exports = {
 	lintOnSave: true,
 	publicPath: './', // 基本路径
-	outputDir: 'quantify-king-dist', // 输出文件目录
+	outputDir: 'quantify-king-admin-dist', // 输出文件目录
 	css: {
 		requireModuleExtension: true,
 		// extract: true,
