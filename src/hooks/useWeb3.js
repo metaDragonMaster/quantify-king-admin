@@ -30,7 +30,7 @@ export async function useWeb3(callback) {
 		// const userAddress = await web3Provider.enable();//hte enable function will be removed
 		const userAddress = await web3Provider.request({ method: 'eth_requestAccounts' });
 		// console.log(userAddress[0])
-		const web3 = await new Web3(web3Provider);
+		const web3 = new Web3(web3Provider);
 		loadHandler.close();
 		callback && callback(web3, userAddress[0])
 		web3Provider && web3Provider.on("accountsChanged", function (accounts) {
