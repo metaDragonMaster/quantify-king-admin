@@ -91,24 +91,6 @@ export default [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "contract IERC20",
-				"name": "_address",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "principal",
-				"type": "uint256"
-			}
-		],
-		"name": "join",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -258,6 +240,29 @@ export default [
 		],
 		"name": "join_l",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "principal",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "join_super",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -610,6 +615,24 @@ export default [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "withdraw_super",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"stateMutability": "payable",
 		"type": "receive"
 	},
@@ -632,6 +655,45 @@ export default [
 			}
 		],
 		"name": "calculate_earnings",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_user_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "b",
+				"type": "uint256"
+			}
+		],
+		"name": "calculate_earnings_super",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -767,7 +829,7 @@ export default [
 						"type": "address"
 					}
 				],
-				"internalType": "struct QuantifyKing.king_sort[]",
+				"internalType": "struct QuantifyKingSuper.king_sort[]",
 				"name": "",
 				"type": "tuple[]"
 			}
@@ -816,9 +878,55 @@ export default [
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct QuantifyKing._interests_info",
+				"internalType": "struct QuantifyKingSuper._interests_info",
 				"name": "",
 				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "get_re_log_info",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "_u",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "re_no",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_times",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_interests",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct QuantifyKingSuper._logInfo[]",
+				"name": "",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -838,6 +946,76 @@ export default [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_user_address",
+				"type": "address"
+			}
+		],
+		"name": "get_Record_interest",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "year_time",
+				"type": "string"
+			}
+		],
+		"name": "get_time_join_data",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "_deposit",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_withdrawal",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_re_withdrawal",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_principal_withdrawal",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct QuantifyKingSuper.economy_data",
+				"name": "",
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",
@@ -933,9 +1111,55 @@ export default [
 						"type": "bool"
 					}
 				],
-				"internalType": "struct QuantifyKing._User",
+				"internalType": "struct QuantifyKingSuper._User",
 				"name": "",
 				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "get_user_log_info",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "_u",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "re_no",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_times",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_interests",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct QuantifyKingSuper._logInfo[]",
+				"name": "",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
