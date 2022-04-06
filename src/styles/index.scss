@@ -1,7 +1,9 @@
-// @import "./font";
+@import "./font";
 @import "./element";
 @import "./class";
+@import "./table";
 @import "./theme";
+
 
 
 *,
@@ -46,6 +48,10 @@ textarea {
 div {
 	background-repeat: no-repeat;
 }
+u {
+	cursor: pointer;
+}
+
 input[type="button"] ,
 button {
 	color: inherit;

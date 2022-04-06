@@ -1,24 +1,7 @@
-@font-face {
-    font-family: 'font_family orbitron';
-    src: url(~@/assets/font/ORBITRON-REGULAR.ttf);
-}
-.font-o ,
-.font-orbitron {
-	font-family: "font_family orbitron";
-}
-
-@mixin mixin-font-hide {
-	// display: -webkit-box;
-	// -webkit-box-orient: vertical;
-	// overflow: hidden;
+.font-hide {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-.font-hide ,
-[font-hide] {
-	@include mixin-font-hide;
-	// -webkit-line-clamp: var(--line-clamp,1);
 }
 
 .text-center {

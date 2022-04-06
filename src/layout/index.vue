@@ -4,7 +4,6 @@
       <el-header class="theme-box-shadow">
         <HeadNav></HeadNav>
       </el-header>
-
       <el-container>
         <el-aside class="theme-box-shadow" :width="menuWidth">
           <Menu :isCollapse="isCollapse"></Menu>
@@ -43,7 +42,6 @@ const storeResize = UseStoreResize();
 const { setClientWidth } = storeResize;
 const {
   isPc,
-  // clientWidth
 } = storeToRefs(storeResize);
 useWindowResize(() => {
   setClientWidth();

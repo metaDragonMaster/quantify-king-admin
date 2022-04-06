@@ -1,0 +1,16 @@
+# https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8						# 文件字符编码是utf-8
+indent_style = tab					# 缩进类型
+indent_size = 4						# 缩进空格数量
+end_of_line = lf					# 文件换行符是 linux 的 `\n`
+insert_final_newline = true			# 文件末尾添加一个空行
+spaces_around_operators = true      # 运算符两遍都有空格
+trim_trailing_whitespace = true		# 不保留行末的空格
+spaces_around_brackets = none		# 表示括号和括号之间应有空格：无空格，仅在括号内，仅在括号外或在括号的两侧 （none，inside，outside，both）
+max_line_length = off				# 在指定的字符数后强制换行。off关闭此功能
+
+[*.js]								# 对所有的 js 文件生效
+quote_type = single					# 字符串使用单引号

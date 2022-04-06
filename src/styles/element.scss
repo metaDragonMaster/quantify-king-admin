@@ -6,13 +6,13 @@ body.el-popup-parent--hidden {
 
 .el-button {
     --el-color-success: #47A663;
-    --el-button-hover-bg-color:   #47a664a8;
+    --el-button-hover-bg-color: #47a664a8;
 }
 
 .el-input {
     --el-input-text-color: #ffffff;
-    --el-input-focus-border: #333333;
-    --el-input-focus-border-color: #e7e7e7;
+    // --el-input-focus-border: #333333;
+    --el-input-focus-border-color: #47A663;
     --el-input-border-color: #6e6e6e;
     --el-input-bg-color: transparent;
     --el-input-placeholder-color: #777777;
@@ -39,11 +39,113 @@ body.el-popup-parent--hidden {
     &.el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
         background-color: #47A663;
     }
+
     .el-table__empty-block {
         background-color: #333333;
     }
+	.el-table__expanded-cell {
+		background-color: inherit;
+	}
 }
 
 .el-form {
     --el-text-color-regular: #FFF;
+}
+
+.el-date-editor {
+    max-width: 100%;
+    --el-input-text-color: #ffffff;
+    --el-text-color-primary: #ffffff;
+    --el-input-focus-border: #333333;
+    --el-input-focus-border-color: #e7e7e7;
+    --el-input-border-color: #6e6e6e;
+    --el-input-bg-color: transparent;
+    --el-input-placeholder-color: #777777;
+    background-image: linear-gradient(90deg,
+            #494949 0%,
+            rgb(73, 73, 73) 100%);
+
+    .el-input__icon {
+        margin-right: 4px;
+    }
+
+    .el-range-input {
+        background-color: #333333;
+    }
+}
+.el-picker__popper.el-popper[role=tooltip] {
+    @media screen and (max-width: 960px) {
+        // max-width: calc(100% - 5px);
+        max-width: 100%;
+        left: 0 !important;
+    }
+}
+.el-date-range-picker {
+    --el-datepicker-text-color: #ffffff;
+    --el-datepicker-off-text-color: #c3c5ca;
+    --el-datepicker-header-text-color: #c3c5ca;
+    --el-datepicker-icon-color: #303133;
+    --el-datepicker-border-color: #e4e7ed;
+    --el-datepicker-inner-border-color: #e4e7ed;
+    --el-datepicker-inrange-bg-color: #f2f6fc;
+    --el-datepicker-inrange-hover-bg-color: #f2f6fc;
+    --el-datepicker-active-color: #47A663;
+    --el-datepicker-hover-text-color: #47A663;
+    --el-color-primary: #47A663;
+    background-color: #333333;
+    color: #c3c5ca;
+
+    .el-picker-panel__footer {
+        background-color: #333333;
+    }
+    @media screen and (max-width: 960px) {
+        max-width: 100%;
+        // width: calc(100% - 5px);
+        .el-picker-panel__body ,
+        .el-date-range-picker__time-header {
+            display: flex;
+            flex-direction: column;
+        }
+        .el-picker-panel__body {
+            min-width: 0;
+        }
+        .el-picker-panel__content {
+            width: calc(100% - 5px);
+        }
+        .is-left {
+            border-right: none;
+        }
+    }
+}
+
+.el-radio-group {
+	.el-radio-button:first-child .el-radio-button__inner {
+		border-left: 1px solid #666;
+	}
+	.el-radio-button__inner {
+		--el-button-bg-color: #333333;
+		--el-button-text-color: #666666;
+		--el-radio-button-checked-text-color: #47A663;
+		--el-radio-button-checked-bg-color: #666666;
+		--el-radio-button-checked-border-color: #666;
+		border:1px solid #666;
+		&:hover {
+			color: #47A663;
+		}
+	}
+}
+
+.el-select {
+	--el-select-input-focus-border-color: #47A663;
+}
+.el-select-dropdown {
+	--el-fill-color-light: #666;
+	.el-select-dropdown__item.hover{
+		--el-text-color-regular: #fff;
+	}
+}
+.el-select__popper.el-popper[role=tooltip] {
+	--el-color-primary:#47A663;
+	--el-color-white: #333;
+	--el-border-color-light: #47A663;
 }

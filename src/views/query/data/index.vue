@@ -1,40 +1,83 @@
 <template>
-  <div>
-    <ul class="grid grid-2">
-      <li class="theme-box-shadow">
+  <el-row :gutter="10">
+    <el-col>
+      <el-date-picker
+        v-model="timeSection"
+        type="datetimerange"
+        range-separator="到"
+        start-placeholder="Start date"
+        end-placeholder="End date"
+      />
+      <p>{{ timeSection }}</p>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-card class="theme-box-shadow">
         <p class="p-1">全部钱包USDT余额</p>
         <p class="p-2">{{ weiAllBalanceOf }}</p>
-      </li>
-      <li class="theme-box-shadow">
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+      <el-card class="theme-box-shadow">
         <p class="p-1">钱包地址数量</p>
         <p class="p-2">{{ board.users }}</p>
-      </li>
-    </ul>
-    <ul class="grid grid-3">
-      <li class="theme-box-shadow">
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="theme-box-shadow">
         <p class="p-1">累积产生利息</p>
         <p class="p-2">{{ allWithdraw }}</p>
-      </li>
-      <li class="theme-box-shadow">
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="theme-box-shadow">
         <p class="p-1">推荐奖励提现</p>
         <p class="p-2">{{ weiReWithdraw }}</p>
-      </li>
-      <li class="theme-box-shadow">
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="theme-box-shadow">
         <p class="p-1">用户利息提现</p>
         <p class="p-2">{{ weiWithdraw }}</p>
-      </li>
-    </ul>
-    <!-- <ul class="grid grid-2"> -->
-    <!-- <li class="theme-box-shadow">
-        <p class="p-1">未领取利息</p>
-        <p class="p-2">99999999999</p>
-      </li> -->
-    <!-- <li class="theme-box-shadow">
-        <p class="p-1">预计下次结息数量</p>
-        <p class="p-2">99999999999</p>
-      </li> -->
-    <!-- </ul> -->
-  </div>
+      </el-card>
+    </el-col>
+    <el-col><h3 class="news">新增数据</h3></el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="news theme-box-shadow">
+        <p class="p-1">新增钱包地址数量</p>
+        <p class="p-2">999999999999</p>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="news theme-box-shadow">
+        <p class="p-1">新增钱包地址USDT数量</p>
+        <p class="p-2">999999999999</p>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="news theme-box-shadow">
+        <p class="p-1">新增质押USDT数量</p>
+        <p class="p-2">999999999999</p>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="news theme-box-shadow">
+        <p class="p-1">新增产生利息数量</p>
+        <p class="p-2">999999999999</p>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="news theme-box-shadow">
+        <p class="p-1">新增钱包地址USDT数量</p>
+        <p class="p-2">999999999999</p>
+      </el-card>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+      <el-card class="news theme-box-shadow">
+        <p class="p-1">新增推荐奖励数量</p>
+        <p class="p-2">999999999999</p>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup>
@@ -44,7 +87,7 @@ import {
   lockLoadHandler,
   PlusElMessage,
 } from "@/utils/PlusElement";
-import { computed, reactive, onMounted } from "vue";
+import { ref, computed, reactive, onMounted } from "vue";
 import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
 import { AbiAddressUSDT } from "@/abis/index";
@@ -66,6 +109,8 @@ onMounted(() => {
   init();
 });
 
+const timeSection = ref("");
+
 const board = reactive({
   AllBalanceOf: "0",
   users: "0",
@@ -77,8 +122,8 @@ const weiAllBalanceOf = computed(() => textFromWei(board.AllBalanceOf));
 // const weiUsers = computed(()=> textFromWei(board.users))
 const weiWithdraw = computed(() => textFromWei(board.withdraw));
 const weiReWithdraw = computed(() => textFromWei(board.reWithdraw));
-const allWithdraw = computed(
-  () => textFromWei((Number(board.reWithdraw) + Number(board.withdraw)).toString())
+const allWithdraw = computed(() =>
+  textFromWei((Number(board.reWithdraw) + Number(board.withdraw)).toString())
 );
 
 async function init() {
@@ -175,42 +220,28 @@ async function getReWithdrawAll() {
 // }
 </script>
 <style lang="scss" scoped>
-.grid {
-  display: grid;
-  grid-gap: 30px;
-  margin-bottom: 30px;
-  li {
-    border-radius: 4px;
-    max-width: 100%;
-    @media screen and (min-width: 1280px) {
-      padding: 40px 50px;
-    }
-    @media screen and (min-width: 769px) and (max-width: 1279px) {
-      padding: 20px 30px;
-    }
-    @media screen and (max-width: 768px) {
-      padding: 10px 20px;
-    }
-    .p-1 {
-      font-size: 20px;
-    }
-    .p-2 {
-      //   margin: 40px 0 50px;
-      font-size: 40px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+.el-row {
+  max-width: 100%;
+}
+.el-col {
+  border-radius: 4px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  .el-card {
+    border: none;
+    color: inherit;
+  }
+  .p-1 {
+    font-size: 20px;
+  }
+  .p-2 {
+    font-size: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
-.grid-2 {
-  @media screen and (min-width: 1280px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-.grid-3 {
-  @media screen and (min-width: 1280px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.news .p-2 {
+  font-size: 20px;
 }
 </style>

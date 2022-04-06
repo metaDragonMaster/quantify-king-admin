@@ -18,7 +18,14 @@ element-loading-background	背景遮罩的颜色	string
 	element-loading-text="Loading..."
 	:element-loading-spinner="LoadSvg"
 	:element-loading-svg-view-box="svgViewBox"
-	element-loading-background="rgba(0, 0, 0, 0.8)"
+	:element-loading-background="LoadBackground"
+
+import {
+	PlusElMessage,
+	LoadBackground,
+	LoadSvg,
+	svgViewBox,
+} from "@/utils/PlusElement";
 */
 
 export const LoadBackground = 'rgba(0, 0, 0, 0.8)'

@@ -1,0 +1,12 @@
+.status {
+	padding: 5px 12px;
+	border-radius: 8px;
+	&-success {
+		color: #47a663;
+		background-color: rgba($color: #47a663, $alpha: .2);
+	}
+	&-error {
+		color: #f94f59;
+		background-color: rgba($color: #f94f59, $alpha: .2);
+	}
+}
