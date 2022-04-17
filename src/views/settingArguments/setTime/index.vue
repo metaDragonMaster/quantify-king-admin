@@ -1,8 +1,9 @@
 <template>
 	<div>
 		<div class="broad theme-box-shadow">
-			<p>当前时间秒数</p>
+			<p>提取利息间隔时间（秒）</p>
 			<p>{{ oldTimeTamp }}</p>
+        <p>相当于  {{ oldTimeTamp / 60 / 60}} 小时</p>
 		</div>
 		<el-form :model="FormData" label-width="120px" label-position="top">
 			<el-form-item label="时间:秒数">

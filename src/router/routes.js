@@ -36,7 +36,7 @@ const routes = [{
 				name: 'queryAllowance',
 				component: () => import('@/views/query/allowance/index.vue'),
 				meta: {
-					title: '认证用户',
+					title: '授权用户',
 					isNav: true,
 				},
 			},

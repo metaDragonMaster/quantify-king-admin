@@ -26,7 +26,7 @@
           ></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="interest" label="费率数值%">
+      <el-table-column prop="interest" label="费率数值 ‰ (千分之)">
         <template v-slot="{ row }">
           <span v-show="!isChangeCell || row.id != table.cell.id">{{
             row.interest

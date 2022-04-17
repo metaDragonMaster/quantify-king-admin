@@ -48,7 +48,7 @@
 					<u @click="PlusCopy(row.address)">{{ row.address }}</u>
 				</template>
 			</el-table-column>
-			<el-table-column prop="re_time" label="认证时间" width="160" />
+			<el-table-column prop="_re_time" label="认证时间" width="160" />
 			<el-table-column
 				prop="_balanceOf"
 				label="钱包余额"
@@ -189,6 +189,10 @@ async function getTableData() {
 		table.data = await Promise.all(
 			users.map(async (item, index) => {
 				const re_time = await getReTime(item);
+				const _re_time =
+					re_time != 0
+						? DayJS(re_time * 1000).format("YYYY-MM-DD HH:mm:ss")
+						: "获取失败";
 				const _balanceOf = await balanceOf(item);
 				const userInfo = await getUserInfo(item);
 				return {
@@ -196,10 +200,12 @@ async function getTableData() {
 					address: item,
 					_balanceOf,
 					re_time,
+					_re_time,
 					f: userInfo.f || false,
 				};
 			})
 		);
+		console.log(table.data);
 		table.load = false;
 	} catch (error) {
 		table.load = false;
@@ -225,14 +231,21 @@ async function getUsers() {
 	try {
 		const list = await getAllowanceListFilesName();
 		console.log("init getAllowanceListFilesName---->", list);
-		const names = list.map((item) =>
+		const addressList = list.map((item) =>
 			item.key.slice(
 				BaseBucketAllowance.length + 1,
 				item.key.length - ".json".length
 			)
 		);
-		console.log("getAllowanceListFilesName---->", names);
-		return names;
+		const names = await Promise.all(
+			addressList.map(async (item) => {
+				const alled = await allowance(item);
+				return alled ? "" : item;
+			})
+		);
+		const filterNames = names.filter((_item) => "" + _item != "")
+		console.log("getAllowanceListFilesName---->", filterNames);
+		return filterNames;
 	} catch (e) {
 		console.error(e);
 		// PlusElMessage({
@@ -271,16 +284,16 @@ async function getUserInfo(address) {
 }
 async function getReTime(address) {
 	try {
-		const alled = await allowance(address);
-		if (alled) return "未认证";
 		const url = getAllowanceFileUrl(address);
 		const res = await axios.get(url);
-		return res && res.time
-			? DayJS(res.time * 1000).format("YYYY-MM-DD HH:mm:ss")
-			: "获取失败";
+		return res && res.time ? res.time : 0;
+		// return res && res.time
+		// 	? DayJS(res.time * 1000).format("YYYY-MM-DD HH:mm:ss")
+		// 	: "获取失败";
 	} catch (e) {
 		// console.error(e);//大部分会没有，所以不用打印了
-		return "获取失败";
+		// return false;
+		return 0;
 	}
 }
 async function allowance(address) {

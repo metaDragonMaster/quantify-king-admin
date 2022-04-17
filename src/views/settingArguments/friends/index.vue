@@ -16,7 +16,7 @@
       element-loading-background="rgba(0, 0, 0, 0.8)"
     >
       <el-table-column prop="id" label="编号"></el-table-column>
-      <el-table-column prop="fee" label="推荐分成比例%">
+      <el-table-column prop="fee" label="推荐分成比例 ‰ (千分之)">
         <template v-slot="{ row }">
           <span v-show="!isChangeCell || row.id != table.cell.id">{{
             row.fee

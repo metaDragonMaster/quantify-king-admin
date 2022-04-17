@@ -23,19 +23,25 @@
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">全部授权USDT余额</p>
-				<p class="p-2">0</p>
+				<p class="p-1">质押授权可归集USDT总额</p>
+				<p class="p-2">{{weiAllBalanceOf_}}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">全部钱包USDT余额</p>
+				<p class="p-1">质押钱包USDT总额</p>
+				<p class="p-2">{{ weiAllBalanceOf }}</p>
+			</el-card>
+		</el-col>
+				<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+			<el-card class="theme-box-shadow">
+				<p class="p-1">质押USDT总额</p>
 				<p class="p-2">{{ weiAllBalanceOf }}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">累积产生利息</p>
+				<p class="p-1">累积质押利息</p>
 				<p class="p-2">{{ allWithdraw }}</p>
 			</el-card>
 		</el-col>
@@ -47,7 +53,7 @@
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">用户利息提现</p>
+				<p class="p-1">用户质押本金提现</p>
 				<p class="p-2">{{ weiWithdraw }}</p>
 			</el-card>
 		</el-col>
@@ -73,7 +79,7 @@
 			<!-- <p>{{ timeSection }}</p>
 			<p>{{ today }}</p> -->
 		</el-col>
-		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+		<!-- <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
 				<p class="p-1">新增授权数量</p>
 				<p class="p-2">{{ newsDate._user_counts }}</p>
@@ -81,11 +87,11 @@
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
-				<p class="p-1">新增存款数量</p>
+				<p class="p-1">新增存款数量</p> -->
 				<!-- <p class="p-2">{{ newsDate._user_counts }}</p> -->
-				<p class="p-2">0</p>
+				<!-- <p class="p-2">0</p>
 			</el-card>
-		</el-col>
+		</el-col> -->
 		<!-- <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
 				<p class="p-1">新增钱包地址USDT数量</p>
@@ -112,19 +118,19 @@
 		</el-col> -->
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
-				<p class="p-1">当日推荐奖提现金额</p>
+				<p class="p-1">推荐奖提现金额</p>
 				<p class="p-2">{{ newsDate._re_withdrawal }}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
-				<p class="p-1">当日质押本金提现金额</p>
+				<p class="p-1">质押本金提现金额</p>
 				<p class="p-2">{{ newsDate._principal_withdrawal }}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
-				<p class="p-1">当日利息提现金额</p>
+				<p class="p-1">利息提现金额</p>
 				<p class="p-2">{{ newsDate._withdrawal }}</p>
 			</el-card>
 		</el-col>
@@ -136,7 +142,7 @@ import {
 	// LoadSvg,
 	// svgViewBox,
 	lockLoadHandler,
-	PlusElMessage,
+	// PlusElMessage,
 } from "@/utils/PlusElement";
 // import Decimal from "decimal.js";
 import DayJS from "dayjs";
@@ -167,12 +173,14 @@ onMounted(() => {
 
 const board = reactive({
 	AllBalanceOf: "0",
+	AllBalanceOf_: "0",
 	users: "0",
 	withdraw: "0",
 	reWithdraw: "0",
 	// calculateEarningsAll: '0',
 });
 const weiAllBalanceOf = computed(() => textFromWei(board.AllBalanceOf));
+const weiAllBalanceOf_ = computed(() => textFromWei(board.AllBalanceOf_));
 // const weiUsers = computed(()=> textFromWei(board.users))
 const weiWithdraw = computed(() => textFromWei(board.withdraw));
 const weiReWithdraw = computed(() => textFromWei(board.reWithdraw));
@@ -190,6 +198,7 @@ async function init() {
 		await getAllUsers();
 		await getReUsers();
 		await getAllBalanceOf();
+		await getAllBalanceOf_();
 		await getUsers();
 		await getWithdrawAll();
 		await getReWithdrawAll();
@@ -216,6 +225,18 @@ async function getAllBalanceOf() {
 		// 	type: "error",
 		// 	message: e.message,
 		// });
+	}
+}
+async function getAllBalanceOf_() {
+	try {
+		const { OtherContract } = Contracts.value;
+		const res = await OtherContract.methods
+			.getAllBalanceOf_(AbiAddressUSDT)
+			.call();
+		console.log("getAllBalanceOf_", res);
+		board.AllBalanceOf_ = res;
+	} catch (e) {
+		console.error(e);
 	}
 }
 async function getUsers() {
