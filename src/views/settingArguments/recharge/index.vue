@@ -72,17 +72,17 @@ async function submit() {
       });
       await init();
     } else {
-      PlusElMessage({
-        type: "error",
-        message: "failed: transfer",
-      });
+    //   PlusElMessage({
+    //     type: "error",
+    //     message: "failed: transfer",
+    //   });
     }
     load.close();
   } catch (e) {
-    PlusElMessage({
-      type: "error",
-      message: e.message,
-    });
+    // PlusElMessage({
+    //   type: "error",
+    //   message: e.message,
+    // });
     load.close();
   }
 }

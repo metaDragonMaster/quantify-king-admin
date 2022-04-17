@@ -16,7 +16,7 @@
       element-loading-background="rgba(0, 0, 0, 0.8)"
     >
       <el-table-column prop="id" label="编号"></el-table-column>
-      <el-table-column prop="fee" label="推荐分成比例">
+      <el-table-column prop="fee" label="推荐分成比例%">
         <template v-slot="{ row }">
           <span v-show="!isChangeCell || row.id != table.cell.id">{{
             row.fee
@@ -36,7 +36,6 @@ import {
   LoadSvg,
   svgViewBox,
   lockLoadHandler,
-  PlusElMessage,
 } from "@/utils/PlusElement";
 import { computed, reactive, onMounted } from "vue";
 import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
@@ -122,10 +121,10 @@ async function updateCell() {
     }
   } catch (e) {
     console.error(e);
-    PlusElMessage({
-      type: "error",
-      message: e.message,
-    });
+    // PlusElMessage({
+    //   type: "error",
+    //   message: e.message,
+    // });
     load.close();
   }
 }

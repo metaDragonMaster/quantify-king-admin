@@ -72,8 +72,8 @@ const balanceOf = reactive({
 
 async function getAllBalanceOf() {
 	try {
-		const { QKContract } = Contracts.value;
-		const res = await QKContract.methods
+		const { OtherContract } = Contracts.value;
+		const res = await OtherContract.methods
 			.getAllBalanceOf(AbiAddressUSDT)
 			.call();
 		balanceOf.account = textFromWei(res);
@@ -84,8 +84,8 @@ async function getAllBalanceOf() {
 }
 async function getAllBalanceOf_() {
 	try {
-		const { QKContract } = Contracts.value;
-		const res = await QKContract.methods
+		const { OtherContract } = Contracts.value;
+		const res = await OtherContract.methods
 			.getAllBalanceOf_(AbiAddressUSDT)
 			.call();
 		balanceOf.auth = textFromWei(res);

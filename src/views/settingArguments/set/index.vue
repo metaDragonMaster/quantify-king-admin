@@ -26,7 +26,7 @@
           ></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="interest" label="费率数值">
+      <el-table-column prop="interest" label="费率数值%">
         <template v-slot="{ row }">
           <span v-show="!isChangeCell || row.id != table.cell.id">{{
             row.interest
@@ -42,12 +42,11 @@
 </template>
 
 <script setup>
-    
+
 import {
   LoadSvg,
   svgViewBox,
   lockLoadHandler,
-  PlusElMessage,
 } from "@/utils/PlusElement";
 import { computed, reactive,onMounted } from "vue";
 import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
@@ -143,10 +142,10 @@ async function updateCell() {
     }
   } catch (e) {
     console.error(e);
-    PlusElMessage({
-      type: "error",
-      message: e.message,
-    });
+    // PlusElMessage({
+    //   type: "error",
+    //   message: e.message,
+    // });
     load.close();
   }
 }

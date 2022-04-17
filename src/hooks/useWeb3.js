@@ -11,11 +11,11 @@ async function getEth() {
   console.log(provider !== window.ethereum);
   if (provider !== window.ethereum) {
     //没安装MetaMask钱包进行弹框提示
-    PlusElMessage({
-      type: "warning",
-      message: "error 10404:MetaMask not installed",
-      // '请安装MetaMask'
-    });
+    // PlusElMessage({
+    //   type: "warning",
+    //   message: "error 10404:MetaMask not installed",
+    //   // '请安装MetaMask'
+    // });
     throw new Error("error 10404:MetaMask not installed");
   } else {
     // if (
@@ -34,7 +34,7 @@ async function getEth() {
   }
 }
 export async function useWeb3(callback) {
-	//正在获取授权 
+	//正在获取授权
   const loadHandler = lockLoadHandler("Getting Authorization...");
   try {
     const web3Provider = await getEth();
@@ -52,11 +52,11 @@ export async function useWeb3(callback) {
     return web3;
   } catch (error) {
     console.error(error);
-    PlusElMessage({
-      type: "error",
-      message: "User denied account access",
-      // '请安装MetaMask'
-    });
+    // PlusElMessage({
+    //   type: "error",
+    //   message: "User denied account access",
+    //   // '请安装MetaMask'
+    // });
     loadHandler.close();
     return;
   }

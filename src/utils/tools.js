@@ -1,4 +1,5 @@
 // import { ElMessage } from "element-plus"
+import { PlusElMessage } from '@/utils/PlusElement';
 
 /**
  * This is just a simple version of deep copy
@@ -9,38 +10,38 @@
  */
 export function deepClone(source) {
 	if (!source && typeof source !== 'object') {
-		throw new Error('error arguments', 'deepClone')
+		throw new Error('error arguments', 'deepClone');
 	}
-	const targetObj = source.constructor === Array ? [] : {}
-	Object.keys(source).forEach(keys => {
+	const targetObj = source.constructor === Array ? [] : {};
+	Object.keys(source).forEach((keys) => {
 		if (source[keys] && typeof source[keys] === 'object') {
-			targetObj[keys] = deepClone(source[keys])
+			targetObj[keys] = deepClone(source[keys]);
 		} else {
-			targetObj[keys] = source[keys]
+			targetObj[keys] = source[keys];
 		}
-	})
-	return targetObj
+	});
+	return targetObj;
 }
 /**
  * @param {string} url
  * @returns {Object}
  */
 export function param2Obj(url) {
-	const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
+	const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ');
 	if (!search) {
-		return {}
+		return {};
 	}
-	const obj = {}
-	const searchArr = search.split('&')
-	searchArr.forEach(v => {
-		const index = v.indexOf('=')
+	const obj = {};
+	const searchArr = search.split('&');
+	searchArr.forEach((v) => {
+		const index = v.indexOf('=');
 		if (index !== -1) {
-			const name = v.substring(0, index)
-			const val = v.substring(index + 1, v.length)
-			obj[name] = val
+			const name = v.substring(0, index);
+			const val = v.substring(index + 1, v.length);
+			obj[name] = val;
 		}
-	})
-	return obj
+	});
+	return obj;
 }
 export const countStatistics = (n) => {
 	//统计字数
@@ -62,7 +63,7 @@ export const countStatistics = (n) => {
 	}
 	return imageLength + zh.length + (result.length - zh.length) / 2;
 	// console.log("格式化之后的内容：",this.spanInfo)
-}
+};
 
 export const debounce = (fn, delay = 300) => {
 	let timer = null;
@@ -73,7 +74,7 @@ export const debounce = (fn, delay = 300) => {
 			timer = null;
 		}, delay);
 	};
-}
+};
 export const throttle = (fn, delay = 1000) => {
 	var timer = null;
 	return function () {
@@ -83,15 +84,19 @@ export const throttle = (fn, delay = 1000) => {
 			timer = null;
 		}, delay);
 	};
-}
+};
 
 export const assign = function (objs) {
-	return Object.assign(...objs)
-}
-export const getItemByKey = function (value, list, key) {
-	return list.filter(item => value == item[key])[0];
-}
-export const getObjectKeyAndValue = function (object,
+	return Object.assign(...objs);
+};
+export const getItemByKey = function (value, list, key = 'value') {
+	return list.filter((item) => value == item[key])[0] || undefined;
+};
+export const getValueByKey = function (value, attr, list, key = 'value') {
+	return list.filter((item) => value == item[key])[0][attr] || undefined;
+};
+export const getObjectKeyAndValue = function (
+	object,
 	keyName = 'key',
 	valueName = 'value'
 ) {
@@ -100,24 +105,24 @@ export const getObjectKeyAndValue = function (object,
 		console.log(object[i], i);
 		obj.push({
 			[keyName]: i,
-			[valueName]: object[i]
-		})
+			[valueName]: object[i],
+		});
 	}
-	return obj
-}
+	return obj;
+};
 
 export const ArrayKeysToObject = function (Arr, Interface) {
 	let _project = {};
 	let i;
 	for (i in Arr) {
 		if (Interface.includes(i)) {
-			_project[i] = Arr[i]
+			_project[i] = Arr[i];
 		}
 	}
-	return _project
-}
+	return _project;
+};
 
-export function copy (text) {
+export function copy(text) {
 	// console.log('copyText');
 	const textareaEl = document.createElement('textarea');
 	textareaEl.setAttribute('readonly', 'readonly'); // 防止手机上弹出软键盘
@@ -139,7 +144,13 @@ export function copy (text) {
 	// }
 	return success;
 }
-
+export function PlusCopy(text) {
+	const res = copy(text);
+	PlusElMessage({
+		type: res ? 'success' : 'error',
+		message: res ? 'copy success' : 'copy error',
+	});
+}
 export const downloadFile = function (file) {
 	const a = document.createElement('a');
 	let url = window.URL.createObjectURL(file);
@@ -147,13 +158,13 @@ export const downloadFile = function (file) {
 	a.download = file.name;
 	a.click();
 	window.URL.revokeObjectURL(url);
-}
+};
 
-export const fileToUrl = function(file) {
+export const fileToUrl = function (file) {
 	let url = window.URL.createObjectURL(file);
 	window.URL.revokeObjectURL(url);
 	return url;
-}
+};
 
 /**
  * 计算百分比
@@ -161,13 +172,28 @@ export const fileToUrl = function(file) {
  * @param   {number} total 分母
  * @returns {number} 返回数百分比
  */
-export function Percentage(num, total) { 
-    if (num == 0 || total == 0){
-        return 0;
-    }
-    return (Math.round(num / total * 10000) / 100.00);// 小数点后两位百分比
+export function Percentage(num, total) {
+	if (num == 0 || total == 0) {
+		return 0;
+	}
+	return Math.round((num / total) * 10000) / 100.0; // 小数点后两位百分比
 }
 
-export function truncationAddress(address,startNum = 6,endNum = 4) {
-    return `${address.slice(0, startNum)}****${address.slice(-endNum)}`
+export function truncationAddress(address, startNum = 6, endNum = 4) {
+	return `${address.slice(0, startNum)}****${address.slice(-endNum)}`;
+}
+export function numToArr(num) {
+	if (typeof num != 'number' || num <= 0) return [];
+	const arr = [];
+	let i = 0;
+	do {
+		arr.push(i++);
+	} while (arr.length < num);
+	return arr;
+}
+
+export function flatten(arr) {
+	return arr.reduce((result, item) => {
+		return result.concat(Array.isArray(item) ? flatten(item) : item);
+	}, []);
 }

@@ -6,7 +6,7 @@
 			text-color="#fff"
 			:router="true"
 		>
-			<el-menu-item index="/query/data">
+			<!-- <el-menu-item index="/query/data">
 				<img class="icon" src="@/assets/icons/icon-menu-1.png" alt="" />
 				<span>数据看板</span>
 			</el-menu-item>
@@ -18,25 +18,34 @@
 				<img class="icon" src="@/assets/icons/icon-menu-3.png" alt="" />
 				<span>一键归集</span>
 			</el-menu-item>
-			<el-menu-item index="/walletCollection">
+			<el-menu-item index="/withdrawalApproval">
 				<img class="icon" src="@/assets/icons/icon-menu-3.png" alt="" />
-				<span>钱包归集</span>
+				<span>提现审批</span>
 			</el-menu-item>
 			<el-menu-item index="/settingArguments">
 				<img class="icon" src="@/assets/icons/icon-menu-3.png" alt="" />
 				<span>参数设置</span>
+			</el-menu-item> -->
+			<el-menu-item
+				v-for="item in menuData"
+				:key="item.path"
+				:index="item.path"
+			>
+				<!-- <img class="icon" :src="item.icon" alt="errorImage" /> -->
+				<img class="icon" src="@/assets/icons/icon-menu-1.png" alt="errorImage" />
+				<span>{{ item.title }}</span>
 			</el-menu-item>
 			<!-- <el-menu-item index="/cashWithdrawal">
-        <img class="icon" src="@/assets/icons/icon-menu-4.png" alt="" />
-        <span>提现</span>
-      </el-menu-item> -->
+				<img class="icon" src="@/assets/icons/icon-menu-4.png" alt="" />
+				<span>提现</span>
+			</el-menu-item> -->
 		</el-menu>
 	</div>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
-import { toRefs, computed, defineProps } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { toRefs, computed, defineProps, onMounted } from "vue";
 const props = defineProps({
 	isCollapse: {
 		type: Boolean,
@@ -46,6 +55,24 @@ const props = defineProps({
 const { isCollapse } = toRefs(props);
 const Route = useRoute();
 const defaultMenuActive = computed(() => Route.path);
+
+const Router = useRouter();
+const menuData = computed(() =>
+	Router.getRoutes()
+		.filter((item) => item.meta && item.meta.isNav)
+		.map((item) => {
+			return {
+				path: item.path,
+				title: item.meta && item.meta.title ? item.meta.title : "",
+				// icon: require(item.meta && item.meta.icon
+				// 	? `@/assets/icons/${item.meta.icon}.png`
+				// 	: "../../assets/icons/icon-menu-1.png"),
+			};
+		})
+);
+onMounted(() => {
+
+});
 </script>
 <style lang="scss" scoped>
 :deep(.el-menu) {

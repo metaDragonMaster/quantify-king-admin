@@ -1,5 +1,12 @@
 <template>
-	<div>
+	<el-dialog
+		title="下级"
+		v-model="showDialog"
+		fullscreen
+		:close-on-click-modal="false"
+		:close-on-press-escape="false"
+		@closed="close"
+	>
 		<div class="search-address">
 			<el-select
 				v-model="table.sort"
@@ -31,6 +38,9 @@
 				>
 			</div>
 		</div>
+		<div class="search-address">
+			<slot name="selectLv"></slot>
+		</div>
 		<el-table
 			:data="tableData"
 			style="width: 100%"
@@ -60,14 +70,6 @@
 								更改
 							</button>
 						</div>
-						<div>
-							<button
-								class="update-button"
-								@click="openDialogReChild(row)"
-							>
-								查看更多
-							</button>
-						</div>
 						<div class="flex">
 							<dl>
 								<dt>好友等级</dt>
@@ -94,17 +96,6 @@
 								<dd>{{ row.resChild.s3.profit }}</dd>
 							</dl>
 						</div>
-						<!-- <div class="flex change-addres">
-							<span>
-								上级钱包地址: {{row.resAddress}}
-							</span>
-							<button
-								class="change-addres-button"
-								@click="openMask(row.id)"
-							>
-								更改
-							</button>
-						</div>-->
 					</div>
 				</template>
 			</el-table-column>
@@ -114,7 +105,7 @@
 					<u @click="PlusCopy(row.address)">{{ row.address }}</u>
 				</template>
 			</el-table-column>
-			<el-table-column prop="second" label="利息产生次数" />
+			<el-table-column prop="second" label="利息产生次数" min-width="120"/>
 			<el-table-column prop="interest" label="利息余额" />
 			<el-table-column prop="interestRate" label="利率" />
 			<el-table-column prop="end_time" label="上次提取时间" width="160" />
@@ -148,14 +139,6 @@
 					>
 				</template>
 			</el-table-column>
-			<template #empty>
-				<p v-if="table.load">loading...</p>
-				<el-empty v-else description="数据为空">
-					<el-button type="success" @click="getBaseTableData"
-						>尝试获取</el-button
-					>
-				</el-empty>
-			</template>
 		</el-table>
 		<el-dialog
 			custom-class="update-re-user"
@@ -175,29 +158,12 @@
 				<el-button type="primary" @click="updateRe">确 定</el-button>
 			</div>
 		</el-dialog>
-		<selectLvdialog
-			v-model:show="reDialog.show"
-			ref="selectLvdialogRef"
-			@closeDialog="closeDialogReChild"
-		>
-			<template v-slot:selectLv>
-				<el-button type="success" @click="setReDialogLv('s1')"
-					>lv - 1</el-button
-				>
-				<el-button type="success" @click="setReDialogLv('s2')"
-					>lv - 2</el-button
-				>
-				<el-button type="success" @click="setReDialogLv('s3')"
-					>lv - 3</el-button
-				>
-			</template>
-		</selectLvdialog>
-	</div>
+	</el-dialog>
 </template>
 
 <script setup>
 import { Search } from "@element-plus/icons-vue";
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, defineExpose, reactive,  computed, defineProps,defineEmits } from "vue";
 import DayJS from "dayjs";
 import {
 	PlusElMessage,
@@ -211,8 +177,7 @@ import { storeToRefs } from "pinia";
 import { AbiAddressUSDT } from "@/abis/index";
 import { userInfoInterface, reInterestsInterface } from "@/abis/interface";
 import { ArrayKeysToObject, deepClone, PlusCopy } from "@/utils/tools";
-import selectLvdialog from "./selectLvdialog.vue";
-import { nextTick } from "process";
+import { useVModel } from "@/hooks/useVModel";
 
 const storeContracts = UseStoreContracts();
 const storeWeb3js = UseStoreWeb3js();
@@ -221,14 +186,15 @@ const { web3, userAddress } = storeToRefs(storeWeb3js);
 function textFromWei(str) {
 	return web3.value.utils.fromWei(str) || str;
 }
-
-onMounted(() => {
-	init();
+const emits = defineEmits(['closeDialog'])
+const props = defineProps({
+	show: {
+		type: Boolean,
+		default: false,
+	},
 });
+const showDialog = useVModel(props, "show");
 
-async function init() {
-	getBaseTableData();
-}
 const sortList = [
 	{
 		value: "0",
@@ -272,37 +238,6 @@ const sortList = [
 	},
 ];
 
-const selectLvdialogRef = ref();
-const reDialog = reactive({
-	show: false,
-	usersAddressList: [],
-	rowResChild: defaultResChild,
-	lv: "s1",
-});
-
-function openDialogReChild(row) {
-	reDialog.rowResChild = deepClone(row.resChild);
-	reDialogGetBaseData();
-	reDialog.show = true;
-}
-function closeDialogReChild() {
-	reDialog.usersAddressList = []
-	reDialog.rowResChild = defaultResChild
-	reDialog.lv = 's1'
-	reDialog.show = false
-}
-function reDialogGetBaseData() {
-	reDialog.usersAddressList = reDialog.rowResChild[reDialog.lv].address;
-	nextTick(() => {
-		selectLvdialogRef.value.getBaseTableData(reDialog.usersAddressList);
-	});
-}
-
-function setReDialogLv(lv) {
-	reDialog.lv = lv;
-	reDialogGetBaseData()
-}
-
 const table = reactive({
 	load: false, //列表等待锁
 	sort: "", //条件搜索： 排序
@@ -311,6 +246,12 @@ const table = reactive({
 	searchAddressLock: false,
 	selectionData: [],
 });
+
+function close() {
+	emits('closeDialog')
+	table.data = []
+}
+
 const canUsersQ = computed(() => !(table.selectionData.length > 0));
 const tableData = computed(() => {
 	let deepData = deepClone(table.data);
@@ -429,11 +370,13 @@ const defaultResChild = {
 		profit: "0",
 	},
 };
-
-async function getBaseTableData() {
+defineExpose({
+	getBaseTableData
+})
+async function getBaseTableData(users) {
 	table.load = true;
 	try {
-		const users = await getUsers();
+		console.log(users);
 		table.data = await getTableData(users);
 		table.load = false;
 	} catch (error) {
@@ -471,21 +414,6 @@ async function getTableData(users) {
 		);
 		return data;
 	} catch (error) {
-		return [];
-	}
-}
-async function getUsers() {
-	try {
-		const { QKContract } = Contracts.value;
-		const res = await QKContract.methods.getUsers().call();
-		console.log("getUsers res", res);
-		return res;
-	} catch (e) {
-		console.error(e);
-		// PlusElMessage({
-		// 	type: "error",
-		// 	message: e.message,
-		// });
 		return [];
 	}
 }
@@ -581,17 +509,17 @@ async function getResChild(address) {
 		const s3_of = await getUserAllReBalanceOf(address, "2");
 		return {
 			s1: {
-				address: s1_address,
+				address: s1_address.length,
 				principal: s1_of.principal,
 				profit: s1_of.profit,
 			},
 			s2: {
-				address: s2_address,
+				address: s2_address.length,
 				principal: s2_of.principal,
 				profit: s2_of.profit,
 			},
 			s3: {
-				address: s3_address,
+				address: s3_address.length,
 				principal: s3_of.principal,
 				profit: s3_of.profit,
 			},
@@ -835,101 +763,3 @@ async function addAssistant(address, bool) {
 	}
 }
 </script>
-
-<style lang="scss" scoped>
-:deep() .search-address {
-	@media screen and (min-width: 769px) {
-		display: flex;
-		align-items: center;
-		margin-bottom: 10px;
-		& > *:not(:last-child) {
-			margin-right: 20px;
-		}
-		.select-status {
-			margin-right: 20px;
-		}
-	}
-	@media screen and (max-width: 768px) {
-		& > * {
-			margin-bottom: 10px;
-		}
-	}
-	.el-input {
-		margin-right: 10px;
-	}
-
-	.select-sort {
-		max-width: 136px;
-	}
-}
-.table-expand {
-	color: #fff;
-	padding: 0 20px 0 48px;
-
-	.res-address {
-		margin-bottom: 10px;
-		align-items: center;
-		.update-button {
-			border: 1px solid #fff;
-			margin-left: 10px;
-			border-radius: 4px;
-			padding: 2px 8px;
-		}
-	}
-	dl {
-		text-align: center;
-		&:not(:last-child) {
-			margin-right: 20px;
-		}
-		dt {
-			color: #999;
-		}
-		dd {
-			margin-top: 10px;
-		}
-	}
-}
-.change-address-dialog {
-	max-width: 550px;
-	text-align: center;
-	margin: 20vh auto 0;
-	padding: 20px 60px 30px;
-	@media screen and (max-width: 768px) {
-		padding: 10px 20px 20px;
-		margin: 20vh 10px 0;
-		.el-input {
-			margin: 20px 0;
-		}
-	}
-	.el-input {
-		margin: 40px 0;
-	}
-	.footer {
-		width: 100%;
-		display: flex;
-		justify-content: space-around;
-		button {
-			padding: 6px 25px;
-			border-radius: 4px;
-		}
-	}
-}
-.el-link {
-	font-size: 12px;
-	&:not(:last-child) {
-		margin-right: 6px;
-	}
-}
-:deep(.el-table) {
-	.el-table__expand-icon .el-icon {
-		font-size: 18px;
-	}
-}
-:deep() .update-re-user {
-	.footer {
-		width: 100%;
-		display: flex;
-		justify-content: end;
-	}
-}
-</style>

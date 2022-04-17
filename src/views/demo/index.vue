@@ -1,10 +1,11 @@
 <template>
-    <div>demo{{$route.params.id}}</div>
+	<div>
+		<p>demo</p>
+	</div>
 </template>
 
 <script setup>
 
-</script>
-<style lang='scss' scoped>
 
-</style>
+</script>
+<style lang="scss" scoped></style>

@@ -5,6 +5,8 @@ import {
   AbiAddressQK,
   AbiUSDT,
   AbiAddressUSDT,
+  AbiOther,
+  AbiAddressOther,
 } from "@/abis/index.js";
 
 export const UseStoreWeb3js = defineStore("Web3js", {
@@ -60,10 +62,13 @@ export const UseStoreWeb3js = defineStore("Web3js", {
 async function startContracts(web3) {
   const USDTContract = await getContract(web3, AbiUSDT, AbiAddressUSDT);
   const QKContract = await getContract(web3, AbiQK, AbiAddressQK);
+  const OtherContract = await getContract(web3, AbiOther, AbiAddressOther);
+
   // console.log(USDTContract);
   return {
     USDTContract,
     QKContract,
+    OtherContract,
   };
 }
 

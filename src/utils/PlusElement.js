@@ -49,6 +49,15 @@ export const lockLoadHandler = (text) => {
     background: LoadBackground,
   });
 };
+export const targetLoadHandler = (target, text) => {
+	return ElLoading.service({
+		target,
+		text,
+		spinner: LoadSvg,
+		svgViewBox: svgViewBox,
+		background: LoadBackground,
+	});
+};
 
 
 export async function tryFunction(fn, errFn, loadText = "loading...") {

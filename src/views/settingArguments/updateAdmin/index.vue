@@ -37,17 +37,17 @@ async function submit() {
         message: "success: update admin",
       });
     } else {
-      PlusElMessage({
-        type: "error",
-        message: "failed: update admin",
-      });
+    //   PlusElMessage({
+    //     type: "error",
+    //     message: "failed: update admin",
+    //   });
     }
     load.close();
   } catch (e) {
-    PlusElMessage({
-      type: "error",
-      message: e.message,
-    });
+    // PlusElMessage({
+    //   type: "error",
+    //   message: e.message,
+    // });
     load.close();
   }
 }

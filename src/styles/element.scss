@@ -4,7 +4,7 @@ body.el-popup-parent--hidden {
     }
 }
 
-.el-button {
+.el-button.el-button--success {
     --el-color-success: #47A663;
     --el-button-hover-bg-color: #47a664a8;
 }
@@ -37,7 +37,7 @@ body.el-popup-parent--hidden {
     }
 
     &.el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-        background-color: #47A663;
+        background-color: #666666;
     }
 
     .el-table__empty-block {
@@ -45,6 +45,9 @@ body.el-popup-parent--hidden {
     }
 	.el-table__expanded-cell {
 		background-color: inherit;
+	}
+	.el-table__expand-icon {
+		--el-text-color-regular: #fff
 	}
 }
 
@@ -61,6 +64,7 @@ body.el-popup-parent--hidden {
     --el-input-border-color: #6e6e6e;
     --el-input-bg-color: transparent;
     --el-input-placeholder-color: #777777;
+	--el-text-color-regular: #fff;
     background-image: linear-gradient(90deg,
             #494949 0%,
             rgb(73, 73, 73) 100%);
@@ -98,6 +102,9 @@ body.el-popup-parent--hidden {
     .el-picker-panel__footer {
         background-color: #333333;
     }
+	// .el-range-input {
+	// 	--el-text-color-regular: #fff;
+	// }
     @media screen and (max-width: 960px) {
         max-width: 100%;
         // width: calc(100% - 5px);
@@ -148,4 +155,11 @@ body.el-popup-parent--hidden {
 	--el-color-primary:#47A663;
 	--el-color-white: #333;
 	--el-border-color-light: #47A663;
+}
+
+.el-dialog {
+    --el-dialog-bg-color: #333;
+    .el-dialog__title {
+        --el-text-color-primary:#fff;
+    }
 }

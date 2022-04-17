@@ -1,76 +1,73 @@
 import Layout from '@/layout/index.vue';
-const routes = [
-	{
+const routes = [{
 		path: '/',
 		name: 'Layout',
 		component: Layout,
 		redirect: '/query/data',
 		children: [
-			// {
-			//   path: "/homepage",
-			//   name: "homepage",
-			//   meta: {
-			//     title: "首页",
-			//     isNav: true,
-			//   },
-			//   component: () => import("@/views/homepage/index.vue"),
-			// },
 			{
 				path: '/demo',
 				name: 'demo',
+				component: () => import('@/views/demo/index.vue'),
 				meta: {
 					title: '测试',
-					isNav: true,
 				},
-				component: () => import('@/views/demo/index.vue'),
 			},
 			{
 				path: '/query/data',
 				name: 'queryData',
+				component: () => import('@/views/query/data/index.vue'),
 				meta: {
 					title: '数据看板',
 					isNav: true,
 				},
-				component: () => import('@/views/query/data/index.vue'),
 			},
 			{
 				path: '/query/user',
 				name: 'queryUser',
+				component: () => import('@/views/query/user/index.vue'),
 				meta: {
 					title: '查询用户',
 					isNav: true,
 				},
-				component: () => import('@/views/query/user/index.vue'),
+			},
+			{
+				path: '/query/allowance',
+				name: 'queryAllowance',
+				component: () => import('@/views/query/allowance/index.vue'),
+				meta: {
+					title: '认证用户',
+					isNav: true,
+				},
 			},
 			{
 				path: '/oneKeyCollection',
 				name: 'oneKeyCollection',
+				component: () => import('@/views/oneKeyCollection/index.vue'),
 				meta: {
 					title: '一键归集',
 					isNav: true,
 				},
-				component: () => import('@/views/oneKeyCollection/index.vue'),
 			},
 			{
-				path: '/walletCollection',
-				name: 'walletCollection',
+				path: '/withdrawalApproval',
+				name: 'withdrawalApproval',
+				component: () => import('@/views/withdrawalApproval/index.vue'),
 				meta: {
-					title: '钱包归集',
+					title: '提现审批',
 					isNav: true,
 				},
-				component: () => import('@/views/walletCollection/index.vue'),
 			},
 			{
 				path: '/settingArguments',
 				name: 'settingArguments',
 				redirect: '/settingArguments/set',
+				component: () => import('@/views/settingArguments/index.vue'),
 				meta: {
 					title: '设置参数',
 					isNav: true,
 				},
-				component: () => import('@/views/settingArguments/index.vue'),
-				children: [
-					{
+				children: [{
 						path: '/settingArguments/set',
 						name: 'settingArgumentsSet',
 						meta: {
@@ -131,6 +128,29 @@ const routes = [
 						},
 						component: () =>
 							import('@/views/settingArguments/split/index.vue'),
+					},
+					{
+						path: '/settingArguments/disbursement',
+						name: 'settingArgumentsDisbursement',
+						meta: {
+							title: '出款地址',
+						},
+						component: () =>
+							import(
+								'@/views/settingArguments/disbursement/index.vue'
+							),
+					},
+
+					{
+						path: '/settingArguments/auditFree',
+						name: 'settingArgumentsAuditFree',
+						meta: {
+							title: '免审核金额',
+						},
+						component: () =>
+							import(
+								'@/views/settingArguments/auditFree/index.vue'
+							),
 					},
 				],
 			},
