@@ -3,12 +3,12 @@ import { lockLoadHandler, PlusElMessage } from "@/utils/PlusElement";
 import detectEthereumProvider from "@metamask/detect-provider";
 
 async function getEth() {
-  console.log("getEth");
-  console.log(window.ethereum);
-  console.log(typeof window.ethereum === "undefined");
+  // console.log("getEth");
+  // console.log(window.ethereum);
+  // console.log(typeof window.ethereum === "undefined");
   const provider = await detectEthereumProvider();
-  console.log(provider,);
-  console.log(provider !== window.ethereum);
+  // console.log(provider,);
+  // console.log(provider !== window.ethereum);
   if (provider !== window.ethereum) {
     //没安装MetaMask钱包进行弹框提示
     // PlusElMessage({

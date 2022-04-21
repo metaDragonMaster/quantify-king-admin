@@ -23,25 +23,25 @@
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">质押授权可归集USDT总额</p>
-				<p class="p-2">{{weiAllBalanceOf_}}</p>
+				<p class="p-1">存款授权可归集USDT总额</p>
+				<p class="p-2">{{ weiAllBalanceOf_ }}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">质押钱包USDT总额</p>
-				<p class="p-2">{{ weiAllBalanceOf }}</p>
-			</el-card>
-		</el-col>
-				<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
-			<el-card class="theme-box-shadow">
-				<p class="p-1">质押USDT总额</p>
+				<p class="p-1">存款钱包USDT总额</p>
 				<p class="p-2">{{ weiAllBalanceOf }}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">累积质押利息</p>
+				<p class="p-1">存款USDT总额</p>
+				<p class="p-2">{{ balanceOfValue }}</p>
+			</el-card>
+		</el-col>
+		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
+			<el-card class="theme-box-shadow">
+				<p class="p-1">累积存款利息</p>
 				<p class="p-2">{{ allWithdraw }}</p>
 			</el-card>
 		</el-col>
@@ -53,14 +53,14 @@
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
-				<p class="p-1">用户质押本金提现</p>
+				<p class="p-1">用户存款本金提现</p>
 				<p class="p-2">{{ weiWithdraw }}</p>
 			</el-card>
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="theme-box-shadow">
 				<p class="p-1">预计未结利息总额</p>
-				<p class="p-2">{{ calculateEarningsAll }}</p>
+				<p class="p-2">{{ board.calculateEarningsAll }}</p>
 			</el-card>
 		</el-col>
 		<el-col>
@@ -88,8 +88,8 @@
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
 				<p class="p-1">新增存款数量</p> -->
-				<!-- <p class="p-2">{{ newsDate._user_counts }}</p> -->
-				<!-- <p class="p-2">0</p>
+		<!-- <p class="p-2">{{ newsDate._user_counts }}</p> -->
+		<!-- <p class="p-2">0</p>
 			</el-card>
 		</el-col> -->
 		<!-- <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
@@ -100,7 +100,7 @@
 		</el-col> -->
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
-				<p class="p-1">新增质押USDT数量</p>
+				<p class="p-1">新增存款USDT数量</p>
 				<p class="p-2">{{ newsDate._deposit }}</p>
 			</el-card>
 		</el-col>
@@ -124,7 +124,7 @@
 		</el-col>
 		<el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
 			<el-card class="news theme-box-shadow">
-				<p class="p-1">质押本金提现金额</p>
+				<p class="p-1">存款本金提现金额</p>
 				<p class="p-2">{{ newsDate._principal_withdrawal }}</p>
 			</el-card>
 		</el-col>
@@ -149,7 +149,7 @@ import DayJS from "dayjs";
 import { ref, computed, reactive, onMounted } from "vue";
 import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
-import { AbiAddressUSDT } from "@/abis/index";
+import { AbiAddressUSDT,AbiAddressQK } from "@/abis/index";
 import { getTimeJoinDataInterface } from "@/abis/interface";
 import { ArrayKeysToObject, numToArr } from "@/utils/tools";
 import {
@@ -177,7 +177,7 @@ const board = reactive({
 	users: "0",
 	withdraw: "0",
 	reWithdraw: "0",
-	// calculateEarningsAll: '0',
+	calculateEarningsAll: '0',
 });
 const weiAllBalanceOf = computed(() => textFromWei(board.AllBalanceOf));
 const weiAllBalanceOf_ = computed(() => textFromWei(board.AllBalanceOf_));
@@ -197,17 +197,31 @@ async function init() {
 	try {
 		await getAllUsers();
 		await getReUsers();
+		await balanceOf();
 		await getAllBalanceOf();
 		await getAllBalanceOf_();
 		await getUsers();
 		await getWithdrawAll();
 		await getReWithdrawAll();
-		// --**await getCalculateEarningsAll()
-		await startNewData();
 		await getCalculateEarningsAll();
+		await startNewData();
 		load.close();
 	} catch (e) {
 		load.close();
+	}
+}
+
+const balanceOfValue = ref("0");
+async function balanceOf() {
+	try {
+		const { USDTContract } = Contracts.value;
+		console.log(USDTContract);
+		const res = await USDTContract.methods.balanceOf(AbiAddressQK).call();
+		console.log("balanceOf",res);
+		balanceOfValue.value = textFromWei(res);
+	} catch (e) {
+		console.error(e);
+		return false;
 	}
 }
 
@@ -304,7 +318,7 @@ async function startNewData() {
 	setNewsDate(data);
 }
 function setNewsDate(data) {
-	newsDate._deposit = data._deposit; //质押
+	newsDate._deposit = data._deposit; //存款
 	newsDate._principal_withdrawal = data._principal_withdrawal;
 	newsDate._re_withdrawal = data._re_withdrawal;
 	newsDate._withdrawal = data._withdrawal;
@@ -406,7 +420,6 @@ async function getReviewUserData(timestamp) {
 	}
 }
 
-const calculateEarningsAll = ref("0");
 async function getCalculateEarningsAll() {
 	try {
 		const { QKContract } = Contracts.value;
@@ -414,7 +427,7 @@ async function getCalculateEarningsAll() {
 			.get_Calculate_Earnings_All(AbiAddressUSDT)
 			.call();
 		console.log("getCalculateEarningsAll", res);
-		calculateEarningsAll.value = textFromWei(res);
+		board.calculateEarningsAll = textFromWei(res);
 	} catch (e) {
 		console.error(e);
 		// PlusElMessage({

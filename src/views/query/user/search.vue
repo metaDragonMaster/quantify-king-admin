@@ -91,7 +91,7 @@
 								<dd>{{ row.resChild.s3.principal }}</dd>
 							</dl>
 							<dl>
-								<dt>质押USDT数量</dt>
+								<dt>存款USDT数量</dt>
 								<dd>{{ row.resChild.s1.profit }}</dd>
 								<dd>{{ row.resChild.s2.profit }}</dd>
 								<dd>{{ row.resChild.s3.profit }}</dd>
@@ -129,7 +129,7 @@
 					<u @click="PlusCopy(row.address)">{{ row.address }}</u>
 				</template>
 			</el-table-column>
-			<el-table-column prop="second" label="利息产生次数" />
+			<!-- <el-table-column prop="second" label="利息产生次数" /> -->
 			<el-table-column prop="interest" label="利息余额" />
 			<el-table-column prop="interestRate" label="利率" />
 			<el-table-column prop="end_time" label="上次提取时间" width="160" />
@@ -143,7 +143,7 @@
 			<el-table-column prop="_balanceOf" label="钱包余额" />
 			<el-table-column prop="u_released" label="已提现" />
 			<el-table-column prop="_income" label="审核中利息" />
-			<el-table-column prop="_isAss" label="是否授权" />
+			<el-table-column prop="_isAss" label="是否授权归集" />
 
 			<!-- <el-table-column prop="address" label="未领取" /> -->
 			<el-table-column label="操作">
@@ -206,6 +206,8 @@
 <script setup>
 import { Search } from "@element-plus/icons-vue";
 import search from "./search.vue";
+import selectLvdialog from "./selectLvdialog.vue";
+
 import { ref, reactive, computed, defineExpose } from "vue";
 import DayJS from "dayjs";
 import {
@@ -220,7 +222,6 @@ import { storeToRefs } from "pinia";
 import { AbiAddressUSDT } from "@/abis/index";
 import { userInfoInterface, reInterestsInterface } from "@/abis/interface";
 import { ArrayKeysToObject, deepClone, PlusCopy } from "@/utils/tools";
-import selectLvdialog from "./selectLvdialog.vue";
 import { nextTick } from "process";
 
 const storeContracts = UseStoreContracts();
@@ -249,11 +250,11 @@ const sortList = [
 	},
 	{
 		value: "2",
-		label: "质押正序",
+		label: "存款正序",
 	},
 	{
 		value: "3",
-		label: "质押倒序",
+		label: "存款倒序",
 	},
 	{
 		value: "4",
@@ -370,14 +371,14 @@ function sortTableData(data) {
 		console.log("钱包余额倒序");
 		data.sort((pItem, nItem) => nItem._balanceOf - pItem._balanceOf);
 	} else if (table.sort == "2") {
-		console.log("质押正序");
+		console.log("存款正序");
 		data.sort(
 			(pItem, nItem) =>
 				pItem.interest_bearing_principal -
 				nItem.interest_bearing_principal
 		);
 	} else if (table.sort == "3") {
-		console.log("质押倒序");
+		console.log("存款倒序");
 		data.sort(
 			(pItem, nItem) =>
 				nItem.interest_bearing_principal -
@@ -406,11 +407,11 @@ function sortTableData(data) {
 async function expandChange(row) {
 	table.load = true;
 	try {
-		const res = await getResChild(row.address);
 		const resAddress = await getRes(row.address);
+		const resChild = await getResChild(row.address);
 		console.log("getResChild:", res);
-		row.resChild = res;
 		row.resAddress = resAddress;
+		row.resChild = resChild;
 		table.load = false;
 	} catch (error) {
 		table.load = false;
@@ -458,6 +459,8 @@ async function getBaseTableData(users) {
 		console.log("users is null");
 		return;
 	}
+
+	console.log("getBaseTableData -->",users);
 	table.load = true;
 	try {
 		table.data = await getTableData(users);

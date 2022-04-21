@@ -1,16 +1,18 @@
 <template>
+	<p class="copy-text" >子后台地址: <u @click="PlusCopy(sonUrlAddress)">{{sonUrlAddress}}</u></p>
 	<search ref="searchRef"></search>
 </template>
 
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
+import { PlusCopy } from "@/utils/tools"
 import { UseStoreContracts } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
 import search from "./search.vue";
 const storeContracts = UseStoreContracts();
 const { Contracts } = storeToRefs(storeContracts);
 const searchRef = ref();
-
+const sonUrlAddress = 'https://dry-waterfall-1093.on.fleek.co/'
 onMounted(async () => {
 	const users = await getUsers();
 	nextTick(() => searchRef.value.getBaseTableData(users));
@@ -29,6 +31,9 @@ async function getUsers() {
 </script>
 
 <style lang="scss" scoped>
+.copy-text {
+	margin-bottom: 10px;
+}
 :deep() .search-address {
 	@media screen and (min-width: 769px) {
 		display: flex;
@@ -123,5 +128,9 @@ async function getUsers() {
 		display: flex;
 		justify-content: flex-end;
 	}
+}
+
+:deep() .el-link:not(:last-child){
+	margin-right: 6px;
 }
 </style>

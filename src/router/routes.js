@@ -27,7 +27,7 @@ const routes = [{
 				name: 'queryUser',
 				component: () => import('@/views/query/user/index.vue'),
 				meta: {
-					title: '查询用户',
+					title: '用户管理',
 					isNav: true,
 				},
 			},

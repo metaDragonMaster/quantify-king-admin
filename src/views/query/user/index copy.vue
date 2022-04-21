@@ -88,7 +88,7 @@
 								<dd>{{ row.resChild.s3.principal }}</dd>
 							</dl>
 							<dl>
-								<dt>质押USDT数量</dt>
+								<dt>存款USDT数量</dt>
 								<dd>{{ row.resChild.s1.profit }}</dd>
 								<dd>{{ row.resChild.s2.profit }}</dd>
 								<dd>{{ row.resChild.s3.profit }}</dd>
@@ -240,11 +240,11 @@ const sortList = [
 	},
 	{
 		value: "2",
-		label: "质押正序",
+		label: "存款正序",
 	},
 	{
 		value: "3",
-		label: "质押倒序",
+		label: "存款倒序",
 	},
 	{
 		value: "4",
@@ -360,14 +360,14 @@ function sortTableData(data) {
 		console.log("钱包余额倒序");
 		data.sort((pItem, nItem) => nItem._balanceOf - pItem._balanceOf);
 	} else if (table.sort == "2") {
-		console.log("质押正序");
+		console.log("存款正序");
 		data.sort(
 			(pItem, nItem) =>
 				pItem.interest_bearing_principal -
 				nItem.interest_bearing_principal
 		);
 	} else if (table.sort == "3") {
-		console.log("质押倒序");
+		console.log("存款倒序");
 		data.sort(
 			(pItem, nItem) =>
 				nItem.interest_bearing_principal -

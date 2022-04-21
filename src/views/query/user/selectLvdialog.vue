@@ -13,7 +13,6 @@
 
 <script setup>
 import {defineEmits,defineProps} from "vue"
-import search from "./search.vue";
 import { useVModel } from "@/hooks/useVModel";
 const emits = defineEmits(["closeDialog"]);
 const props = defineProps({
