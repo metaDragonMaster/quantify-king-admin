@@ -1,5 +1,5 @@
 <template>
-	<el-row :gutter="10">
+	<el-row :gutter="10" id="viewRef">
 		<el-col>
 			<h3 class="title">总计</h3>
 		</el-col>
@@ -138,18 +138,13 @@
 </template>
 
 <script setup>
-import {
-	// LoadSvg,
-	// svgViewBox,
-	lockLoadHandler,
-	// PlusElMessage,
-} from "@/utils/PlusElement";
+import { targetLoadHandler } from "@/utils/PlusElement";
 // import Decimal from "decimal.js";
 import DayJS from "dayjs";
-import { ref, computed, reactive, onMounted } from "vue";
+import { ref, computed, reactive, onMounted, nextTick } from "vue";
 import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
-import { AbiAddressUSDT,AbiAddressQK } from "@/abis/index";
+import { AbiAddressUSDT, AbiAddressQK } from "@/abis/index";
 import { getTimeJoinDataInterface } from "@/abis/interface";
 import { ArrayKeysToObject, numToArr } from "@/utils/tools";
 import {
@@ -168,7 +163,7 @@ function textFromWei(str) {
 //   return web3.value.utils.toWei(str.toString()) || str;
 // }
 onMounted(() => {
-	init();
+	nextTick(init())
 });
 
 const board = reactive({
@@ -177,7 +172,7 @@ const board = reactive({
 	users: "0",
 	withdraw: "0",
 	reWithdraw: "0",
-	calculateEarningsAll: '0',
+	calculateEarningsAll: "0",
 });
 const weiAllBalanceOf = computed(() => textFromWei(board.AllBalanceOf));
 const weiAllBalanceOf_ = computed(() => textFromWei(board.AllBalanceOf_));
@@ -193,7 +188,7 @@ const allWithdraw = computed(() =>
 
 async function init() {
 	// await getTableData();
-	const load = lockLoadHandler("init loading...");
+	const load = targetLoadHandler('#viewRef', "init loading...");
 	try {
 		await getAllUsers();
 		await getReUsers();
@@ -217,7 +212,7 @@ async function balanceOf() {
 		const { USDTContract } = Contracts.value;
 		console.log(USDTContract);
 		const res = await USDTContract.methods.balanceOf(AbiAddressQK).call();
-		console.log("balanceOf",res);
+		console.log("balanceOf", res);
 		balanceOfValue.value = textFromWei(res);
 	} catch (e) {
 		console.error(e);
@@ -258,8 +253,7 @@ async function getUsers() {
 		const { QKContract } = Contracts.value;
 		const res = await QKContract.methods.getUsers().call();
 		console.log("getUsers", res);
-		const num = res.length - 1 > 0 ? res.length - 1 : 0;
-		board.users = num;
+		board.users = res.length;
 	} catch (e) {
 		console.error(e);
 		// PlusElMessage({
@@ -328,7 +322,7 @@ function strAdd(a, b) {
 	return (Number(a) + Number(b)).toString();
 }
 async function getNewsData() {
-	const load = lockLoadHandler("getNewsData loading...");
+	const load = targetLoadHandler('#viewRef',"getNewsData loading...");
 	console.log("getNewsData", timeSection.value);
 	try {
 		const _times = timeSection.value;

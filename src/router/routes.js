@@ -5,14 +5,14 @@ const routes = [{
 		component: Layout,
 		redirect: '/query/data',
 		children: [
-			{
-				path: '/demo',
-				name: 'demo',
-				component: () => import('@/views/demo/index.vue'),
-				meta: {
-					title: '测试',
-				},
-			},
+			// {
+			// 	path: '/demo',
+			// 	name: 'demo',
+			// 	component: () => import('@/views/demo/index.vue'),
+			// 	meta: {
+			// 		title: '测试',
+			// 	},
+			// },
 			{
 				path: '/query/data',
 				name: 'queryData',

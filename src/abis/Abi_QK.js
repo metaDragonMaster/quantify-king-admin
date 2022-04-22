@@ -211,6 +211,40 @@ export default [
 				"internalType": "contract IERC20",
 				"name": "_address",
 				"type": "address"
+			},
+			{
+				"internalType": "address[]",
+				"name": "user_s",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "kkd",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "k",
+				"type": "uint256"
+			}
+		],
+		"name": "dv",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "_address",
+				"type": "address"
 			}
 		],
 		"name": "getQ_counts",

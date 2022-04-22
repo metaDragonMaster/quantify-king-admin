@@ -136,10 +136,10 @@
 import search from "./search.vue";
 import selectLvdialog from "./selectLvdialog.vue";
 import { Search } from "@element-plus/icons-vue";
-import { ref, reactive, computed, defineExpose,nextTick } from "vue";
+import { ref, reactive, computed, defineExpose, nextTick } from "vue";
 import DayJS from "dayjs";
 import axios from "@/utils/request";
-import Decimal from "decimal.js";
+// import Decimal from "decimal.js";
 import {
 	PlusElMessage,
 	lockLoadHandler,
@@ -149,13 +149,12 @@ import {
 } from "@/utils/PlusElement";
 import { UseStoreContracts, UseStoreWeb3js } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
-import { AbiAddressUSDT, AbiAddressQK } from "@/abis/index";
+import { AbiAddressUSDT } from "@/abis/index";
 import { userInfoInterface } from "@/abis/interface";
 import { ArrayKeysToObject, deepClone, PlusCopy } from "@/utils/tools";
 import {
 	getAllUsersFileUrl,
-	getAllUsersListFilesName,
-	getRelationChildAll,
+	getRelationChildLvListFileUrl,
 	lvs,
 } from "@/common/fleekStorage.js";
 
@@ -191,6 +190,7 @@ function closeDialogReChild() {
 function reDialogGetBaseData() {
 	reDialog.usersAddressList = reDialog.rowResChild[reDialog.lv];
 	nextTick(() => {
+		console.log(selectLvdialogRef.value)
 		selectLvdialogRef.value.getBaseTableData(reDialog.usersAddressList);
 	});
 }
@@ -287,7 +287,6 @@ async function getBaseTableData(users) {
 		console.log("users is null");
 		return;
 	}
-
 	console.log("getBaseTableData -->", users);
 	table.load = true;
 	try {
@@ -338,7 +337,8 @@ async function expandChange(row) {
 	try {
 		const resAddress = await getRes(row.address);
 		const resChild = await getResChild(row.address);
-		console.log("getResChild:", resAddress);
+		console.log("resAddress:", resAddress);
+		console.log("resChild:", resChild);
 		row.resAddress = resAddress;
         row.resChild = resChild
 		table.load = false;
@@ -352,6 +352,7 @@ async function getResChild(address) {
 		const re1 = await getResChildLv(address, lvs[0]);
 		const re2 = await getResChildLv(address, lvs[1]);
 		const re3 = await getResChildLv(address, lvs[2]);
+		console.log(re1,re2,re3)
 		return {
 			re1,
 			re2,
@@ -365,7 +366,7 @@ async function getResChild(address) {
 
 async function getResChildLv(address, lv) {
 	try {
-		const res = await getRelationChildAll(address, lv);
+		const res = await getRelationChildLvListFileUrl(address, lv);
 		return res;
 	} catch (e) {
 		return [];

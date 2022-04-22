@@ -1,5 +1,5 @@
 <template>
-	<search ref="searchRef"></search>
+	<search id="viewRef" ref="searchRef"></search>
 </template>
 
 <script setup>
@@ -7,18 +7,27 @@ import { ref, onMounted, nextTick } from "vue";
 import { UseStoreContracts } from "@/stores/web3js";
 import { storeToRefs } from "pinia";
 import Decimal from "decimal.js";
-import {  AbiAddressQK } from "@/abis/index";
-import {
-	getAllUsersListFilesName,
-} from "@/common/fleekStorage.js";
+import { AbiAddressQK } from "@/abis/index";
+import { targetLoadHandler } from "@/utils/PlusElement";
+import { getAllUsersListFilesName } from "@/common/fleekStorage.js";
 import search from "./search.vue";
 const storeContracts = UseStoreContracts();
 const { Contracts } = storeToRefs(storeContracts);
 const searchRef = ref();
-onMounted(async () => {
-	const users = await getUsers();
-	nextTick(() => searchRef.value.getBaseTableData(users));
+onMounted(() => {
+	init();
 });
+
+async function init() {
+	const load = targetLoadHandler("#viewRef", "init loading...");
+	try {
+		const users = await getUsers();
+		load.close();
+		nextTick(() => searchRef.value.getBaseTableData(users));
+	} catch (e) {
+		load.close();
+	}
+}
 
 async function getUsers() {
 	try {
@@ -153,7 +162,7 @@ async function allowance(address) {
 	}
 }
 
-:deep() .el-link:not(:last-child){
+:deep() .el-link:not(:last-child) {
 	margin-right: 6px;
 }
 </style>

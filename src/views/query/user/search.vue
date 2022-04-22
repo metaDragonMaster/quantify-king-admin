@@ -409,7 +409,7 @@ async function expandChange(row) {
 	try {
 		const resAddress = await getRes(row.address);
 		const resChild = await getResChild(row.address);
-		console.log("getResChild:", res);
+		console.log("getResChild:", resChild);
 		row.resAddress = resAddress;
 		row.resChild = resChild;
 		table.load = false;

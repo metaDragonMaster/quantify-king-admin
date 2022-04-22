@@ -1,5 +1,8 @@
 import Web3 from "web3";
-import { lockLoadHandler, PlusElMessage } from "@/utils/PlusElement";
+import {
+  lockLoadHandler,
+  // PlusElMessage
+} from "@/utils/PlusElement";
 import detectEthereumProvider from "@metamask/detect-provider";
 
 async function getEth() {
@@ -29,12 +32,12 @@ async function getEth() {
     //   });
     //   throw new Error("error 10501:MetaMask currently in an informal network");
     // } else {
-      return window.ethereum;
+    return window.ethereum;
     // }
   }
 }
 export async function useWeb3(callback) {
-	//正在获取授权
+  //正在获取授权
   const loadHandler = lockLoadHandler("Getting Authorization...");
   try {
     const web3Provider = await getEth();

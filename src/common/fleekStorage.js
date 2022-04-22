@@ -32,7 +32,7 @@ function getBucketUrl(bucket) {
 	return `https://storageapi2.fleek.co/${BaseBucket}/${bucket}/`;
 }
 
-const BaseVersion = 'version-5';
+const BaseVersion = 'version-11';
 const BaseBucket = `0fdd4305-c758-4bda-97be-de16e5307de4-bucket/${BaseVersion}`;
 
 const bucketTest = 'test';
@@ -108,17 +108,6 @@ export function getRelationReFileUrl(userAddress) {
 	const BaseUrl = getBucketUrl(BaseBucketRelationRe);
 	return `${BaseUrl}${userAddress}.json`;
 }
-// export async function uploadRelationRe(userAddress, baseData) {
-// 	let option = {
-// 		bucket: BaseBucketRelationRe,
-// 		fileKey: `${userAddress}.json`,
-// 		fileType: 'json',
-// 		fileData: JSON.stringify(baseData),
-// 	};
-// 	const res = await uploadFile(option);
-// 	console.log('uploadRelationRe-->', res);
-// 	return res;
-// }
 
 // 子集关系
 const bucketRelationChildTest = "RelationChildTest"
@@ -126,48 +115,9 @@ const bucketRelationChild = "RelationChild"
 const BaseBucketRelationChild =
 	process.env.NODE_ENV == 'development' ? bucketRelationChildTest : bucketRelationChild;
 export const lvs = ['re1', 're2', 're3'];
-export async function getRelationChildAll(userAddress, lv) {
-	try {
-		const prefix = `${BaseBucketRelationChild}/${userAddress}/${lv}`
-		const res = await getListFiles(prefix)
-		const addressList = res.map((item) =>
-			getFileNameByFileKey(prefix, item.key)
-		);
-		return addressList
-	} catch (e) {
-		return []
-	}
+export async function getRelationChildLvListFileUrl(reAddress,lv) {
+	const bucket = `${BaseBucketRelationChild}/${reAddress}/${lv}`;
+	const files = await getListFiles(bucket)
+	const addressList = files.map(item=>getFileNameByFileKey(bucket,item.key))
+	return addressList
 }
-/*
-async function getListFiles(prefix) {
-	const files = await listFiles({
-		apiKey: options.apiKey,
-		apiSecret: options.apiSecret,
-		prefix: `${BaseVersion}/${prefix}`,
-		getOptions: ['key'],
-	});
-	console.log(files);
-	return files;
-}
-*/
-
-// export function getRelationChildFileUrl(userAddress,reAddress,lv) {
-// 	const lvs = ['re1','re2','re3'];
-// 	if(!lvs.includes(lv)) return;
-// 	const BaseUrl = getBucketUrl(BaseBucketRelationChild);
-// 	return `${BaseUrl}${reAddress}/${lv}/${userAddress}.json`;
-// }
-// export async function uploadRelationChild(userAddress,reAddress,lv) {
-// 	if(!lvs.includes(lv)) return false;
-// 	let option = {
-// 		bucket: `${BaseBucketRelationChild}/${reAddress}/${lv}`,
-// 		fileKey: `${userAddress}.json`,
-// 		fileType: 'json',
-// 		fileData: JSON.stringify({
-// 			time: getNewTimetamps(),
-// 		}),
-// 	};
-// 	const res = await uploadFile(option);
-// 	console.log('uploadRelationChild-->', res);
-// 	return res;
-// }
